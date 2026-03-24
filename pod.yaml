@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: my-Pod
+  labels: 
+    app: my-label
+  namespace: prod
+spec: 
+  containers: 
+    - name: my-container
+      image: redis
+      ports: 
+        - containerPort: 6379
+      startupProbe: 
+        exec: 
+          command: ["cat >> file1"] 
+        successThreshold: 4
+        initialDelaySeconds: 2
+        failureThreshold: 1
+      livenessProbe:
+        httpGet:
+          path: /
+        successThreshold: 4
+        initialDelaySeconds: 2
+        failureThreshold: 1
+      readinessProbe:
+        tcpSocket:
+          port: 80             
+        successThreshold: 4
+        initialDelaySeconds: 2
+        failureThreshold: 1
+  
